@@ -16,6 +16,32 @@ color_thresholds = {
 
 # Function to classify pixels into color categories
 def classify_color(r, g, b):
+    """
+    Classify an RGB color into a named color category based on predefined thresholds.
+    
+    This function checks if the given RGB values fall within the ranges defined in
+    the color_thresholds dictionary. Each threshold consists of a lower and upper
+    bound for the R, G, and B channels.
+    
+    Parameters:
+    -----------
+    r : int or float
+        Red channel value
+    g : int or float
+        Green channel value
+    b : int or float
+        Blue channel value
+    
+    Returns:
+    --------
+    str or None
+        The name of the color category if a match is found, otherwise None
+    
+    Notes:
+    ------
+    The function assumes that color_thresholds is a global dictionary with the format:
+    {color_name: ((r_min, g_min, b_min), (r_max, g_max, b_max)), ...}
+    """
     for color, (low, high) in color_thresholds.items():
         if low[0] <= r <= high[0] and low[1] <= g <= high[1] and low[2] <= b <= high[2]:
             return color
@@ -67,11 +93,13 @@ def main():
 
         # Print the average colors in their respective categories
         print("\nAverage colors for each category:")
+        block = '█' * 10
         for color, avg_color in average_colors.items():
             r, g, b = avg_color
             # Generate the ANSI color code for the text
             color_code = rgb_to_ansi(r, g, b)
-            print(f"{color_code}Average {color} color: {avg_color}\033[0m")  # \033[0m resets the color to default
+            print(f"{color_code}{block} | Average {color} color: {avg_color}\033[0m")  # \033[0m resets the color to default
+            # print block char for color
 
     except Exception as e:
         print(f"Error opening image: {e}")
